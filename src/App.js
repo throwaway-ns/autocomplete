@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./styles.css";
 
 // set up api mock that intercepts fetch calls to /api/suggest
@@ -6,6 +6,8 @@ import "./api-mock";
 
 // please read README.md
 export default function App() {
+  const [term, setTerm] = useState();
+
   React.useEffect(() => {
     // these are examples of possible API calls
 
@@ -21,5 +23,10 @@ export default function App() {
       .then(console.log);
   }, []);
 
-  return <div></div>;
+  return (
+    <div>
+      <input value={term} autofocus onChange={e => setTerm(e.target.value)}/>
+      <p>{term}</p>
+    </div>
+  );
 }
