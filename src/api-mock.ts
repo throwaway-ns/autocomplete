@@ -10,7 +10,8 @@ const people = [
   { id: 7, name: "Ivone" },
   { id: 8, name: "Jane" },
   { id: 9, name: "Katherine" },
-  { id: 10, name: "Luke" }
+  { id: 10, name: "Luke" },
+  { id: 10, name: "Luther" }
 ];
 
 // creates API mock server
