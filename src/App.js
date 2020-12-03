@@ -6,27 +6,50 @@ import "./api-mock";
 
 // please read README.md
 export default function App() {
-  const [term, setTerm] = useState();
+  const [term, setTerm] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState();
+  const [results, setResults] = useState([]);
 
   React.useEffect(() => {
-    // these are examples of possible API calls
+    if (!term) {
+      return;
+    }
+    if (term === "") {
+      return;
+    }
 
-    // fetching suggestions without term returns an empty array
-    fetch("/api/suggest")
-      .then((res) => res.json())
-      .then(console.log);
+    setLoading(true);
+    setError(null);
 
-    // fetching suggestionss with term witl try to match the names, see ./api-mock file
-    // for reference
-    fetch(`/api/suggest?${new URLSearchParams({ term: "B" }).toString()}`)
-      .then((res) => res.json())
-      .then(console.log);
-  }, []);
+    fetch(`/api/suggest?${new URLSearchParams({ term }).toString()}`)
+      .then(res => res.json())
+      .then(suggestions => setResults(suggestions))
+      .catch(e => setError(e))
+      .finally(() => setLoading(false));
+  }, [term, setResults, setError, setLoading]);
 
   return (
     <div>
-      <input value={term} autofocus onChange={e => setTerm(e.target.value)}/>
-      <p>{term}</p>
+      <input value={term} autoFocus onChange={e => setTerm(e.target.value)}/>
+      { loading && <p>Loading...</p> }
+      { error && <p>{error}</p> }
+      <SuggestionList suggestions={results} />
     </div>
   );
+}
+
+function SuggestionList({ suggestions }) {
+  if (!suggestions) {
+    return null;
+  }
+  if (suggestions.length === 0) {
+    return null;
+  }
+
+  return (
+    <div>
+      { suggestions.map(({id, name}) => <span key={id}>{name}</span>) }
+    </div>
+  )
 }
