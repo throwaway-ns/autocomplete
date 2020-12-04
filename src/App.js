@@ -14,9 +14,11 @@ export default function App() {
 
   React.useEffect(() => {
     if (!term) {
+      setResults([]);
       return;
     }
     if (term === "") {
+      setResults([]);
       return;
     }
 
