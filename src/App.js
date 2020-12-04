@@ -71,14 +71,16 @@ export default function App() {
       }
 
       setTerm(matches[0]);
+      setResults([]);
     },
     [results]
   );
 
   return (
-    <div>
-      <input value={term} autoFocus onChange={e => setTerm(e.target.value)} />
-      {loading && <p>Loading...</p>}
+    <div class="autocomplete-container">
+      <div class={`autocomplete-input-wrapper ${loading ? 'loading' : ''}`}>
+        <input class="autocomplete-input" value={term} autoFocus onChange={e => setTerm(e.target.value)} />
+      </div>
       {error && <p>{error}</p>}
       <SuggestionList suggestions={results} onClick={setTermBySuggestionId} />
     </div>
@@ -94,9 +96,9 @@ function SuggestionList({ suggestions, onClick }) {
   }
 
   return (
-    <ul>
+    <ul class="suggestion-list">
       {suggestions.map(({ id, name }) => (
-        <li key={id} onClick={() => onClick(id)}>
+        <li class="suggestion-list-item" key={id} onClick={() => onClick(id)}>
           {name}
         </li>
       ))}

@@ -1,4 +1,46 @@
-.App {
+:root {
   font-family: sans-serif;
-  text-align: center;
+}
+
+.autocomplete-container {
+  padding: ;
+  display: flex;
+  flex-direction: column;
+}
+
+.autocomplete-input {
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  box-sizing: border-box;
+}
+
+.autocomplete-input-wrapper.loading::after {
+  content: "loading...";
+  color: #0000ff80;
+  font-size: 0.75em;
+  height: 0.75rem;
+  width: 2px;
+  position: absolute;
+  top: 1rem;
+  right: 3.75rem;
+}
+
+.suggestion-list {
+  border: 1px solid #00000030;
+  list-style: none;
+  padding-left: 0;
+  padding: ;
+  margin: 0;
+}
+
+.suggestion-list-item {
+  color: #00000095;
+  cursor: pointer;
+  font-size: 0.875em;
+  padding: 0.375rem 0.5rem;
+}
+
+.suggestion-list-item:hover {
+  background: #0000ff90;
+  color: white;
 }
