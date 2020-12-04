@@ -71,8 +71,8 @@ function SuggestionList({ suggestions }) {
   }
 
   return (
-    <div>
-      { suggestions.map(({id, name}) => <span key={id}>{name}</span>) }
-    </div>
+    <ul>
+      { suggestions.map(({id, name}) => <li key={id}>{name}</li>) }
+    </ul>
   )
 }
