@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import "./styles.css";
 
 // set up api mock that intercepts fetch calls to /api/suggest
@@ -52,17 +52,30 @@ export default function App() {
       });
   }, [term]);
 
+  const setTermBySuggestionId = useCallback((id) => {
+    const matches = results
+      .filter(r => r.id === id)
+      .map(r => r.name);
+
+    if (matches.length === 0) {
+      console.warn('Non-existent suggestion chosen');
+      return;
+    }
+
+    setTerm(matches[0]);
+  }, [results]);
+
   return (
     <div>
       <input value={term} autoFocus onChange={e => setTerm(e.target.value)}/>
       { loading && <p>Loading...</p> }
       { error && <p>{error}</p> }
-      <SuggestionList suggestions={results} />
+      <SuggestionList suggestions={results} onClick={setTermBySuggestionId}/>
     </div>
   );
 }
 
-function SuggestionList({ suggestions }) {
+function SuggestionList({ suggestions, onClick }) {
   if (!suggestions) {
     return null;
   }
@@ -72,7 +85,7 @@ function SuggestionList({ suggestions }) {
 
   return (
     <ul>
-      { suggestions.map(({id, name}) => <li key={id}>{name}</li>) }
+      { suggestions.map(({id, name}) => <li key={id} onClick={() => onClick(id)}>{name}</li>) }
     </ul>
   )
 }
