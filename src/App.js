@@ -6,7 +6,7 @@ import "./api-mock";
 
 // please read README.md
 export default function App() {
-  const [term, setTerm] = useState('');
+  const [term, setTerm] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const [results, setResults] = useState([]);
@@ -25,7 +25,9 @@ export default function App() {
     setLoading(true);
     setError(null);
 
-    const request = fetch(`/api/suggest?${new URLSearchParams({ term }).toString()}`);
+    const request = fetch(
+      `/api/suggest?${new URLSearchParams({ term }).toString()}`
+    );
     latestRequest.current = request;
     request
       .then(res => res.json())
@@ -34,43 +36,44 @@ export default function App() {
           console.warn(`Newer request in-flight. Skipping update.`);
           return;
         }
-        setResults(suggestions)
+        setResults(suggestions);
       })
       .catch(e => {
         if (latestRequest.current !== request) {
           console.warn(`Newer request in-flight. Skipping update.`);
           return;
         }
-        setError(e)
+        setError(e);
       })
       .finally(() => {
         if (latestRequest.current !== request) {
           console.warn(`Newer request in-flight. Skipping update.`);
           return;
         }
-        setLoading(false)
+        setLoading(false);
       });
   }, [term]);
 
-  const setTermBySuggestionId = useCallback((id) => {
-    const matches = results
-      .filter(r => r.id === id)
-      .map(r => r.name);
+  const setTermBySuggestionId = useCallback(
+    id => {
+      const matches = results.filter(r => r.id === id).map(r => r.name);
 
-    if (matches.length === 0) {
-      console.warn('Non-existent suggestion chosen');
-      return;
-    }
+      if (matches.length === 0) {
+        console.warn("Non-existent suggestion chosen");
+        return;
+      }
 
-    setTerm(matches[0]);
-  }, [results]);
+      setTerm(matches[0]);
+    },
+    [results]
+  );
 
   return (
     <div>
-      <input value={term} autoFocus onChange={e => setTerm(e.target.value)}/>
-      { loading && <p>Loading...</p> }
-      { error && <p>{error}</p> }
-      <SuggestionList suggestions={results} onClick={setTermBySuggestionId}/>
+      <input value={term} autoFocus onChange={e => setTerm(e.target.value)} />
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      <SuggestionList suggestions={results} onClick={setTermBySuggestionId} />
     </div>
   );
 }
@@ -85,7 +88,11 @@ function SuggestionList({ suggestions, onClick }) {
 
   return (
     <ul>
-      { suggestions.map(({id, name}) => <li key={id} onClick={() => onClick(id)}>{name}</li>) }
+      {suggestions.map(({ id, name }) => (
+        <li key={id} onClick={() => onClick(id)}>
+          {name}
+        </li>
+      ))}
     </ul>
-  )
+  );
 }
