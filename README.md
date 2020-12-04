@@ -18,7 +18,7 @@ Because we don't expect you to code the perfect solution, please write down poss
 [x] Please provide visual feedback to the user of their actions and what is happening
 [x] When suggestions are loaded, please offer them in a dropdown menu.
 [x] When suggestion is clicked, please change the value of the input to the suggestion's value.
-[ ] We don't want to fetch data from API on each key stroke. Please implement some sort of mechanism to avoid fetching on each key stroke.
+[x] We don't want to fetch data from API on each key stroke. Please implement some sort of mechanism to avoid fetching on each key stroke.
 
 ## Restrictions
 

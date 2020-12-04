@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./styles.css";
 
 // set up api mock that intercepts fetch calls to /api/suggest
@@ -12,7 +12,7 @@ export default function App() {
   const [results, setResults] = useState([]);
   const latestRequest = useRef();
 
-  React.useEffect(() => {
+  useDebouncedEffect(() => {
     if (!term) {
       setResults([]);
       return;
@@ -33,26 +33,26 @@ export default function App() {
       .then(res => res.json())
       .then(suggestions => {
         if (latestRequest.current !== request) {
-          console.warn(`Newer request in-flight. Skipping update.`);
+          console.debug(`Newer request in-flight. Skipping update.`);
           return;
         }
         setResults(suggestions);
       })
       .catch(e => {
         if (latestRequest.current !== request) {
-          console.warn(`Newer request in-flight. Skipping update.`);
+          console.debug(`Newer request in-flight. Skipping update.`);
           return;
         }
         setError(e);
       })
       .finally(() => {
         if (latestRequest.current !== request) {
-          console.warn(`Newer request in-flight. Skipping update.`);
+          console.debug(`Newer request in-flight. Skipping update.`);
           return;
         }
         setLoading(false);
       });
-  }, [term]);
+  }, 150, [term]);
 
   const setTermBySuggestionId = useCallback(
     id => {
@@ -96,3 +96,17 @@ function SuggestionList({ suggestions, onClick }) {
     </ul>
   );
 }
+
+const useDebouncedEffect = (effect, delay, deps) => {
+  const callback = useCallback(effect, deps);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      callback();
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [callback, delay]);
+};
