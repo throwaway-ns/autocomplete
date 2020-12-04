@@ -12,13 +12,20 @@ export default function App() {
   const [results, setResults] = useState([]);
   const latestRequest = useRef();
 
-  useDebouncedEffect(() => {
+  useEffect(() => {
     if (!term) {
       setResults([]);
-      return;
     }
     if (term === "") {
       setResults([]);
+    }
+  }, [term]);
+
+  useDebouncedEffect(() => {
+    if (!term) {
+      return;
+    }
+    if (term === "") {
       return;
     }
 
