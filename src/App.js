@@ -5,6 +5,12 @@ import "./styles.css";
 import "./api-mock";
 
 export default function App() {
+  return (
+    <Autocomplete />
+  );
+}
+
+function Autocomplete() {
   const [term, setTerm] = useState("");
   const termJustChosen = useRef(false);
   const [loading, setLoading] = useState(false);

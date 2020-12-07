@@ -2,6 +2,11 @@
   font-family: sans-serif;
 }
 
+/* The following are some basic styles that only work for this tiny case.
+ * This was the easiest implementation without existing knowledge of what
+ * other styling methods are at play e.g. styled-components, inline styles
+ */
+
 .autocomplete-container {
   padding: ;
   display: flex;
