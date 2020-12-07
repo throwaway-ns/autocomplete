@@ -4,9 +4,9 @@ import "./styles.css";
 // set up api mock that intercepts fetch calls to /api/suggest
 import "./api-mock";
 
-// please read README.md
 export default function App() {
   const [term, setTerm] = useState("");
+  const termJustChosen = useRef(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const [results, setResults] = useState([]);
@@ -22,6 +22,10 @@ export default function App() {
   }, [term]);
 
   useDebouncedEffect(() => {
+    if (termJustChosen.current) {
+      termJustChosen.current = false;
+      return;
+    }
     if (!term) {
       return;
     }
@@ -70,6 +74,7 @@ export default function App() {
         return;
       }
 
+      termJustChosen.current = true;
       setTerm(matches[0]);
       setResults([]);
     },
